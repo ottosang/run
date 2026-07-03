@@ -12,7 +12,7 @@
             --text-main: #ffffff;
             --text-sub: #a0a0a0;
             --border-color: #333333;
-            --dynamic-color: #10B981; 
+            --dynamic-color: #00FF96; /* 초기값: 민트 그린 */
         }
 
         * {
@@ -107,6 +107,11 @@
             gap: 15px;
         }
 
+        /* 4개 버튼을 넓게 쓰기 위한 추가 조정 */
+        #levelGrid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
         .option-btn {
             background-color: var(--panel-bg);
             border: 2px solid var(--border-color);
@@ -137,24 +142,24 @@
         }
 
         .color-dot {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background-color: var(--level-color);
             margin-bottom: 5px;
-            box-shadow: 0 0 10px var(--level-color);
+            box-shadow: 0 0 15px var(--level-color);
         }
 
         .level-btn.selected {
             border-color: var(--level-color);
             color: var(--level-color);
             background-color: transparent;
-            box-shadow: inset 0 0 15px rgba(255,255,255,0.05), 0 0 15px var(--level-color);
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.05), 0 0 20px var(--level-color);
         }
 
         .level-desc {
-            font-size: 0.85rem;
-            opacity: 0.7;
+            font-size: 0.9rem;
+            opacity: 0.8;
             color: var(--text-main);
         }
 
@@ -239,6 +244,9 @@
             .grid-container {
                 grid-template-columns: repeat(2, 1fr);
             }
+            #levelGrid {
+                grid-template-columns: 1fr 1fr;
+            }
             .title { font-size: 1.2rem; }
             .start-btn { font-size: 1.5rem; padding: 20px; }
             .countdown-number { font-size: 8rem; }
@@ -262,7 +270,7 @@
         </section>
 
         <section>
-            <div class="section-title" id="levelTitle">속도 레벨 선택 (LED 색상)</div>
+            <div class="section-title" id="levelTitle">페이스 선택 (가이드 LED 색상)</div>
             <div class="grid-container" id="levelGrid"></div>
         </section>
     </main>
@@ -279,7 +287,6 @@
     </div>
 
     <script>
-        // 오디오 컨텍스트 초기화 (사운드 발생기)
         let audioCtx;
         function initAudio() {
             if (!audioCtx) {
@@ -290,20 +297,18 @@
             }
         }
 
-        // 비프음 재생 함수
         function playBeep(frequency, type, duration) {
             if (!audioCtx) return;
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 
-            oscillator.type = type; // 'sine', 'square', 'sawtooth', 'triangle'
+            oscillator.type = type;
             oscillator.frequency.value = frequency;
 
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
 
             oscillator.start();
-            // 부드럽게 소리가 꺼지도록 페이드아웃 효과
             gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
             oscillator.stop(audioCtx.currentTime + duration);
         }
@@ -317,20 +322,18 @@
                 { id: 'c5', ko: '10,000m', en: '10,000m' },
                 { id: 'c6', ko: '42,195m', en: '42,195m' }
             ],
+            // 문서에 명시된 4가지 페이스와 RGB 색상값을 Hex 코드로 변환하여 적용
             levels: [
-                { id: 'l1', ko: '초보', en: 'Beginner', descKo: 'Lv.1', descEn: 'Lv.1', color: '#FFFFFF' }, 
-                { id: 'l2', ko: '초급', en: 'Novice', descKo: 'Lv.2', descEn: 'Lv.2', color: '#3B82F6' }, 
-                { id: 'l3', ko: '중급', en: 'Intermediate', descKo: 'Lv.3', descEn: 'Lv.3', color: '#06B6D4' }, 
-                { id: 'l4', ko: '숙련', en: 'Advanced', descKo: 'Lv.4', descEn: 'Lv.4', color: '#10B981' }, 
-                { id: 'l5', ko: '상급', en: 'Expert', descKo: 'Lv.5', descEn: 'Lv.5', color: '#EAB308' }, 
-                { id: 'l6', ko: '마스터', en: 'Master', descKo: 'Lv.6', descEn: 'Lv.6', color: '#D946EF' }, 
-                { id: 'l7', ko: '프로', en: 'Pro', descKo: 'Lv.7', descEn: 'Lv.7', color: '#EF4444' }  
+                { id: 'l1', ko: '6:30 /km', en: '6:30 /km', descKo: '스카이 블루', descEn: 'Sky Blue', color: '#0096FF' }, // 0, 150, 255
+                { id: 'l2', ko: '6:00 /km', en: '6:00 /km', descKo: '민트 그린', descEn: 'Mint Green', color: '#00FF96' }, // 0, 255, 150
+                { id: 'l3', ko: '5:30 /km', en: '5:30 /km', descKo: '네온 옐로우', descEn: 'Neon Yellow', color: '#C8FF00' }, // 200, 255, 0
+                { id: 'l4', ko: '5:00 /km', en: '5:00 /km', descKo: '네온 레드', descEn: 'Neon Red', color: '#FF0032' }  // 255, 0, 50
             ],
             ui: {
                 ko: {
                     title: 'SMART RUNNING',
                     courseTitle: '코스 선택',
-                    levelTitle: '속도 레벨 선택 (가이드 LED 색상)',
+                    levelTitle: '페이스 선택 (가이드 LED 색상)',
                     startBtn: '러닝 시작',
                     waitText: '잠시 후 출발합니다',
                     goText: '출발!'
@@ -338,7 +341,7 @@
                 en: {
                     title: 'SMART RUNNING',
                     courseTitle: 'Select Course',
-                    levelTitle: 'Select Speed Level (Guide LED Color)',
+                    levelTitle: 'Select Pace (Guide LED Color)',
                     startBtn: 'START RUNNING',
                     waitText: 'Starting soon...',
                     goText: 'GO!'
@@ -348,7 +351,7 @@
 
         let currentLang = 'ko';
         let selectedCourse = 'c1';
-        let selectedLevel = 'l4'; 
+        let selectedLevel = 'l2'; // 기본값: 6:00/km (민트 그린)
 
         function init() {
             renderGrids();
@@ -372,7 +375,7 @@
                      onclick="selectLevel('${level.id}')" id="btn_${level.id}"
                      style="--level-color: ${level.color};">
                     <div class="color-dot"></div>
-                    <span style="font-weight: 700;">${level[currentLang]}</span>
+                    <span style="font-size: 1.3rem; font-weight: 700; margin: 2px 0;">${level[currentLang]}</span>
                     <span class="level-desc">${level[currentLang === 'ko' ? 'descKo' : 'descEn']}</span>
                 </div>
             `).join('');
@@ -415,7 +418,6 @@
         }
 
         function startRun() {
-            // 버튼 클릭 시 오디오 활성화 (브라우저 정책 우회)
             initAudio();
 
             const overlay = document.getElementById('runOverlay');
@@ -431,20 +433,17 @@
             numberEl.innerText = count;
             overlay.classList.add('active');
 
-            // 첫 7초 진입 시 첫 비프음 (짧은 소리, 600Hz)
             playBeep(600, 'sine', 0.15);
 
             const timer = setInterval(() => {
                 count--;
                 if (count > 0) {
                     numberEl.innerText = count;
-                    // 카운트다운 비프음 재생
                     playBeep(600, 'sine', 0.15);
                 } else if (count === 0) {
                     numberEl.style.display = 'none';
                     textEl.style.display = 'none';
                     goEl.style.display = 'block';
-                    // 출발(GO) 비프음 재생 (길고 높은 소리, 1000Hz)
                     playBeep(1000, 'sine', 0.6);
                 } else {
                     clearInterval(timer);
@@ -456,7 +455,7 @@
 
         function resetToDefault() {
             selectedCourse = 'c1'; 
-            selectedLevel = 'l4';  
+            selectedLevel = 'l2'; // 초기화 시 6:00/km 로 복구
             setLanguage('ko');
             updateThemeColor();     
         }
