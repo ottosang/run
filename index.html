@@ -1,466 +1,591 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>스마트 러닝 가이드 시스템</title>
-    <style>
-        /* 기본 설정 및 다크모드 */
-        :root {
-            --bg-color: #0a0a0a;
-            --panel-bg: #1a1a1a;
-            --text-main: #ffffff;
-            --text-sub: #a0a0a0;
-            --border-color: #333333;
-            --dynamic-color: #00FF96; /* 초기값: 민트 그린 */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORDELIA PREMIUM SOUND ZONE</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #06070a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            user-select: none;
-        }
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-        }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 30px;
-            background-color: var(--panel-bg);
-            border-bottom: 1px solid var(--border-color);
-            transition: border-bottom-color 0.3s;
-        }
+    .controls {
+      position: absolute;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(14, 17, 24, 0.88);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 10px 20px;
+      border-radius: 40px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 100;
+    }
 
-        .title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dynamic-color);
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
+    .controls.hidden {
+      opacity: 0;
+      transform: translateX(-50%) translateY(35px);
+      pointer-events: none;
+    }
 
-        .lang-toggle {
-            display: flex;
-            gap: 10px;
-        }
+    .btn {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
 
-        .lang-btn {
-            background: transparent;
-            color: var(--text-sub);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
 
-        .lang-btn.active {
-            background: var(--dynamic-color);
-            color: #000;
-            border-color: var(--dynamic-color);
-        }
+    .btn.primary {
+      background: #ff4500;
+      border-color: #ff6a33;
+      box-shadow: 0 0 18px rgba(255, 69, 0, 0.5);
+    }
 
-        main {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
+    .btn.primary:hover {
+      background: #e63e00;
+    }
 
-        .section-title {
-            font-size: 1.2rem;
-            color: var(--text-sub);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ccc;
+      font-size: 12px;
+      padding: 0 6px;
+    }
 
-        .section-title::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 1.2rem;
-            background-color: var(--dynamic-color);
-            border-radius: 2px;
-            transition: background-color 0.3s;
-        }
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 80px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.25);
+      outline: none;
+    }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-        }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ff4500;
+      cursor: pointer;
+    }
 
-        /* 4개 버튼을 넓게 쓰기 위한 추가 조정 */
-        #levelGrid {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    #status-toast {
+      position: absolute;
+      top: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 12, 18, 0.85);
+      color: #eee;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 9px 22px;
+      border-radius: 22px;
+      font-size: 13px;
+      backdrop-filter: blur(10px);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 90;
+    }
 
-        .option-btn {
-            background-color: var(--panel-bg);
-            border: 2px solid var(--border-color);
-            color: var(--text-main);
-            padding: 20px 10px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            position: relative;
-        }
-
-        .option-btn:active {
-            transform: scale(0.98);
-        }
-
-        .course-btn.selected {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: var(--text-main);
-            color: var(--text-main);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-
-        .color-dot {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-color: var(--level-color);
-            margin-bottom: 5px;
-            box-shadow: 0 0 15px var(--level-color);
-        }
-
-        .level-btn.selected {
-            border-color: var(--level-color);
-            color: var(--level-color);
-            background-color: transparent;
-            box-shadow: inset 0 0 15px rgba(255,255,255,0.05), 0 0 20px var(--level-color);
-        }
-
-        .level-desc {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            color: var(--text-main);
-        }
-
-        footer {
-            padding: 20px 30px 40px 30px;
-            background-color: var(--bg-color);
-            text-align: center;
-        }
-
-        .start-btn {
-            width: 100%;
-            max-width: 600px;
-            background-color: var(--dynamic-color);
-            color: #000;
-            border: none;
-            padding: 25px;
-            border-radius: 16px;
-            font-size: 1.8rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 4px 25px var(--dynamic-color);
-            transition: all 0.3s;
-        }
-
-        .start-btn:active {
-            filter: brightness(0.8);
-        }
-
-        .footer-logo {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: #555;
-            letter-spacing: 2px;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .countdown-text {
-            font-size: 2rem;
-            color: var(--text-sub);
-            margin-bottom: 20px;
-        }
-
-        .countdown-number {
-            font-size: 12rem;
-            font-weight: 900;
-            color: var(--dynamic-color);
-            line-height: 1;
-            text-shadow: 0 0 50px var(--dynamic-color);
-            transition: color 0.3s, text-shadow 0.3s;
-        }
-
-        .countdown-go {
-            font-size: 8rem;
-            font-weight: 900;
-            color: var(--dynamic-color);
-            text-shadow: 0 0 50px var(--dynamic-color);
-            display: none;
-        }
-
-        @media (max-width: 600px) {
-            .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            #levelGrid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .title { font-size: 1.2rem; }
-            .start-btn { font-size: 1.5rem; padding: 20px; }
-            .countdown-number { font-size: 8rem; }
-        }
-    </style>
+    #status-toast.show {
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="title" id="appTitle">SMART RUNNING</div>
-        <div class="lang-toggle">
-            <button class="lang-btn active" onclick="setLanguage('ko')" id="btnKo">KOR</button>
-            <button class="lang-btn" onclick="setLanguage('en')" id="btnEn">ENG</button>
-        </div>
-    </header>
+  <div id="canvas-container">
+    <canvas id="visualizer"></canvas>
+  </div>
 
-    <main>
-        <section>
-            <div class="section-title" id="courseTitle">코스 선택</div>
-            <div class="grid-container" id="courseGrid"></div>
-        </section>
+  <div id="status-toast"></div>
 
-        <section>
-            <div class="section-title" id="levelTitle">페이스 선택 (가이드 LED 색상)</div>
-            <div class="grid-container" id="levelGrid"></div>
-        </section>
-    </main>
+  <div class="controls" id="controls">
+    <button class="btn primary" id="btn-system-audio" title="윈도우 노트북 소리 연동">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+      시스템 오디오 연동
+    </button>
+    <button class="btn" id="btn-mic">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+      마이크 연동
+    </button>
+    <button class="btn" id="btn-demo">데모 비트</button>
 
-    <footer>
-        <button class="start-btn" id="startBtn" onclick="startRun()">러닝 시작</button>
-        <div class="footer-logo">Powered by iokey.io</div>
-    </footer>
-
-    <div class="overlay" id="runOverlay">
-        <div class="countdown-text" id="countdownText">잠시 후 출발합니다</div>
-        <div class="countdown-number" id="countdownNumber">7</div>
-        <div class="countdown-go" id="countdownGo">출발!</div>
+    <div class="slider-group">
+      <span>감도</span>
+      <input type="range" id="sensitivity" min="0.5" max="4.0" step="0.1" value="2.2">
     </div>
 
-    <script>
-        let audioCtx;
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+    <button class="btn" id="btn-fullscreen">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+      전체화면
+    </button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('visualizer');
+    const ctx = canvas.getContext('2d');
+    const controls = document.getElementById('controls');
+    const toast = document.getElementById('status-toast');
+
+    let width, height;
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function showToast(msg, duration = 3000) {
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    let idleTimer = null;
+    function resetIdleTimer() {
+      controls.classList.remove('hidden');
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        controls.classList.add('hidden');
+      }, 3500);
+    }
+    window.addEventListener('mousemove', resetIdleTimer);
+    resetIdleTimer();
+
+    // ==========================================
+    // 오디오 처리 엔진
+    // ==========================================
+    let audioCtx = null;
+    let analyser = null;
+    let dataArray = null;
+    let sensitivity = 2.2;
+
+    document.getElementById('sensitivity').addEventListener('input', (e) => {
+      sensitivity = parseFloat(e.target.value);
+    });
+
+    function setupAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 1024;
+        analyser.smoothingTimeConstant = 0.78;
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // 시스템 오디오 연동 (노트북 출력 소리 캡처)
+    document.getElementById('btn-system-audio').addEventListener('click', async () => {
+      try {
+        setupAudioContext();
+        showToast("공유 창에서 [전체 화면] 선택 후 좌측 하단 '시스템 오디오 공유'를 꼭 체크해주세요!");
+
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
+        });
+
+        const audioTracks = stream.getAudioTracks();
+        if (audioTracks.length === 0) {
+          showToast("⚠️ '오디오 공유'가 체크되지 않았습니다. 다시 시도해주세요.");
+          return;
         }
 
-        function playBeep(frequency, type, duration) {
-            if (!audioCtx) return;
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
+        const source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        showToast("🎵 CORDELIA 오디오 비주얼라이저 연동 완료!");
+      } catch (err) {
+        console.error(err);
+        showToast("연동 취소됨 또는 권한 오류");
+      }
+    });
 
-            oscillator.type = type;
-            oscillator.frequency.value = frequency;
+    // 마이크 연동
+    document.getElementById('btn-mic').addEventListener('click', async () => {
+      try {
+        setupAudioContext();
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        showToast("🎤 마이크 오디오 연동 완료");
+      } catch (err) {
+        console.error(err);
+        showToast("마이크 권한을 허용해주세요.");
+      }
+    });
 
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
+    // 데모 비트
+    let demoPlaying = false;
+    document.getElementById('btn-demo').addEventListener('click', () => {
+      setupAudioContext();
+      if (demoPlaying) {
+        audioCtx.suspend();
+        demoPlaying = false;
+        showToast("데모 사운드 정지");
+        return;
+      }
 
-            oscillator.start();
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
-            oscillator.stop(audioCtx.currentTime + duration);
+      demoPlaying = true;
+      showToast("🎶 묵직한 서브우퍼 킥 재생 중...");
+
+      function playKick() {
+        if (!demoPlaying) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(analyser);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(28, now + 0.38);
+
+        gain.gain.setValueAtTime(0.9, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+        osc.start(now);
+        osc.stop(now + 0.42);
+
+        setTimeout(playKick, 580);
+      }
+      playKick();
+    });
+
+    // 전체화면 토글
+    document.getElementById('btn-fullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => alert(err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // 파티클 & 충격파 데이터
+    const particles = [];
+    for (let i = 0; i < 90; i++) {
+      particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: Math.random() * 2.5 + 1,
+        speedX: (Math.random() - 0.5) * 0.7,
+        speedY: (Math.random() - 0.5) * 0.7,
+        alpha: Math.random() * 0.6 + 0.2
+      });
+    }
+
+    const shockwaves = [];
+    let prevBass = 0;
+    let bassSmooth = 0;
+    let midSmooth = 0;
+    let trebleSmooth = 0;
+
+    // ==========================================
+    // 메인 렌더링 루프 (강화된 스피커 펄스 + 타이포)
+    // ==========================================
+    function render(time) {
+      requestAnimationFrame(render);
+
+      let bass = 0, mid = 0, treble = 0;
+      if (analyser && dataArray) {
+        analyser.getByteFrequencyData(dataArray);
+
+        let bassSum = 0;
+        for (let i = 0; i < 8; i++) bassSum += dataArray[i];
+        bass = (bassSum / 8 / 255) * sensitivity;
+
+        let midSum = 0;
+        for (let i = 8; i < 60; i++) midSum += dataArray[i];
+        mid = (midSum / 52 / 255) * sensitivity;
+
+        let trebleSum = 0;
+        for (let i = 60; i < 180; i++) trebleSum += dataArray[i];
+        treble = (trebleSum / 120 / 255) * sensitivity;
+      }
+
+      bassSmooth += (bass - bassSmooth) * 0.25;
+      midSmooth += (mid - midSmooth) * 0.2;
+      trebleSmooth += (treble - trebleSmooth) * 0.16;
+
+      // 강력한 킥 감지 시 충격파 링 생성
+      if (bassSmooth > 0.42 && bassSmooth - prevBass > 0.14) {
+        shockwaves.push({ r: 90, opacity: 0.9, width: 4.5 });
+      }
+      prevBass = bassSmooth;
+
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // 앰비언트 배경
+      const bgGrad = ctx.createRadialGradient(cx, cy, 60, cx, cy, Math.max(width, height) * 0.75);
+      bgGrad.addColorStop(0, '#151821');
+      bgGrad.addColorStop(0.5, '#0b0d13');
+      bgGrad.addColorStop(1, '#040507');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // 1. 네온 리본 웨이브 라인
+      const ribbonCount = 4;
+      const ribbonColors = [
+        'rgba(255, 75, 0, 0.45)',
+        'rgba(255, 0, 130, 0.35)',
+        'rgba(0, 220, 255, 0.35)',
+        'rgba(140, 0, 255, 0.3)'
+      ];
+
+      for (let r = 0; r < ribbonCount; r++) {
+        ctx.save();
+        ctx.beginPath();
+        const offsetPhase = (time * 0.0018) + (r * 0.9);
+        const amp = (65 + r * 22) * (1 + bassSmooth * 0.85);
+
+        ctx.moveTo(0, cy);
+        for (let x = 0; x <= width; x += 15) {
+          const normX = x / width;
+          const wave = Math.sin(normX * 6 + offsetPhase) * Math.cos(normX * 3 + offsetPhase * 0.5);
+          const y = cy + wave * amp + Math.sin(x * 0.01 + offsetPhase) * 22;
+          ctx.lineTo(x, y);
         }
 
-        const data = {
-            courses: [
-                { id: 'c1', ko: '한바퀴 4,000m', en: '1 Lap 4,000m' },
-                { id: 'c2', ko: '500m', en: '500m' },
-                { id: 'c3', ko: '1,000m', en: '1,000m' },
-                { id: 'c4', ko: '2,000m', en: '2,000m' },
-                { id: 'c5', ko: '10,000m', en: '10,000m' },
-                { id: 'c6', ko: '42,195m', en: '42,195m' }
-            ],
-            // 문서에 명시된 4가지 페이스와 RGB 색상값을 Hex 코드로 변환하여 적용
-            levels: [
-                { id: 'l1', ko: '6:30 /km', en: '6:30 /km', descKo: '스카이 블루', descEn: 'Sky Blue', color: '#0096FF' }, // 0, 150, 255
-                { id: 'l2', ko: '6:00 /km', en: '6:00 /km', descKo: '민트 그린', descEn: 'Mint Green', color: '#00FF96' }, // 0, 255, 150
-                { id: 'l3', ko: '5:30 /km', en: '5:30 /km', descKo: '네온 옐로우', descEn: 'Neon Yellow', color: '#C8FF00' }, // 200, 255, 0
-                { id: 'l4', ko: '5:00 /km', en: '5:00 /km', descKo: '네온 레드', descEn: 'Neon Red', color: '#FF0032' }  // 255, 0, 50
-            ],
-            ui: {
-                ko: {
-                    title: 'SMART RUNNING',
-                    courseTitle: '코스 선택',
-                    levelTitle: '페이스 선택 (가이드 LED 색상)',
-                    startBtn: '러닝 시작',
-                    waitText: '잠시 후 출발합니다',
-                    goText: '출발!'
-                },
-                en: {
-                    title: 'SMART RUNNING',
-                    courseTitle: 'Select Course',
-                    levelTitle: 'Select Pace (Guide LED Color)',
-                    startBtn: 'START RUNNING',
-                    waitText: 'Starting soon...',
-                    goText: 'GO!'
-                }
-            }
-        };
+        ctx.strokeStyle = ribbonColors[r];
+        ctx.lineWidth = 3 + bassSmooth * 2.5;
+        ctx.shadowColor = ribbonColors[r];
+        ctx.shadowBlur = 18;
+        ctx.stroke();
+        ctx.restore();
+      }
 
-        let currentLang = 'ko';
-        let selectedCourse = 'c1';
-        let selectedLevel = 'l2'; // 기본값: 6:00/km (민트 그린)
+      // 2. 대형 서브우퍼 콘 바운스 (움직임 대폭 강화)
+      const baseR = Math.min(width, height) * 0.23;
+      const pulseMultiplier = 1 + (bassSmooth * 0.36); // 베이스 비트에 크게 팽창
+      const currentR = baseR * pulseMultiplier;
 
-        function init() {
-            renderGrids();
-            updateUI();
-            updateThemeColor(); 
+      ctx.save();
+      // 외부 섀시 메탈 림
+      const rimGrad = ctx.createLinearGradient(cx - currentR, cy - currentR, cx + currentR, cy + currentR);
+      rimGrad.addColorStop(0, '#5a6170');
+      rimGrad.addColorStop(0.5, '#1e2129');
+      rimGrad.addColorStop(1, '#6b7382');
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, currentR * 1.38, 0, Math.PI * 2);
+      ctx.fillStyle = rimGrad;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+      ctx.shadowBlur = 40;
+      ctx.fill();
+
+      // 고무 서라운드 롤 엣지 (두께 팽창)
+      ctx.beginPath();
+      ctx.arc(cx, cy, currentR * 1.24, 0, Math.PI * 2);
+      ctx.fillStyle = '#0f1116';
+      ctx.lineWidth = 18 * pulseMultiplier;
+      ctx.strokeStyle = '#272b35';
+      ctx.stroke();
+      ctx.fill();
+
+      // 진동 콘 본체
+      const coneGrad = ctx.createRadialGradient(cx, cy, 25, cx, cy, currentR);
+      coneGrad.addColorStop(0, '#191d26');
+      coneGrad.addColorStop(0.7, '#212633');
+      coneGrad.addColorStop(1, '#0e1117');
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, currentR, 0, Math.PI * 2);
+      ctx.fillStyle = coneGrad;
+      ctx.fill();
+
+      // 콘 내부 리브드 립 텍스처
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+      ctx.lineWidth = 1.8;
+      for (let ring = 0.35; ring < 0.95; ring += 0.14) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, currentR * ring, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // 우퍼 센터 돔 후광 앰비언트
+      const centerGlow = ctx.createRadialGradient(cx, cy, 10, cx, cy, currentR * 0.65);
+      centerGlow.addColorStop(0, `rgba(255, 75, 0, ${0.15 + bassSmooth * 0.25})`);
+      centerGlow.addColorStop(1, 'rgba(255, 75, 0, 0)');
+      ctx.fillStyle = centerGlow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, currentR * 0.65, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // 3. 충격파 링 (Shockwave)
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const sw = shockwaves[i];
+        sw.r += 7.5;
+        sw.opacity -= 0.016;
+
+        if (sw.opacity <= 0) {
+          shockwaves.splice(i, 1);
+          continue;
         }
 
-        function renderGrids() {
-            const courseGrid = document.getElementById('courseGrid');
-            const levelGrid = document.getElementById('levelGrid');
-            
-            courseGrid.innerHTML = data.courses.map(course => `
-                <div class="option-btn course-btn ${selectedCourse === course.id ? 'selected' : ''}" 
-                     onclick="selectCourse('${course.id}')" id="btn_${course.id}">
-                    ${course[currentLang]}
-                </div>
-            `).join('');
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, sw.r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255, 75, 0, ${sw.opacity})`;
+        ctx.lineWidth = sw.width;
+        ctx.shadowColor = '#ff4500';
+        ctx.shadowBlur = 18;
+        ctx.stroke();
+        ctx.restore();
+      }
 
-            levelGrid.innerHTML = data.levels.map(level => `
-                <div class="option-btn level-btn ${selectedLevel === level.id ? 'selected' : ''}" 
-                     onclick="selectLevel('${level.id}')" id="btn_${level.id}"
-                     style="--level-color: ${level.color};">
-                    <div class="color-dot"></div>
-                    <span style="font-size: 1.3rem; font-weight: 700; margin: 2px 0;">${level[currentLang]}</span>
-                    <span class="level-desc">${level[currentLang === 'ko' ? 'descKo' : 'descEn']}</span>
-                </div>
-            `).join('');
+      // 4. 수직 이퀄라이저 주파수 바 (좌우 대칭)
+      if (dataArray) {
+        const barCount = 42;
+        const barWidth = 4.5;
+        const spread = width * 0.40;
+
+        for (let i = 0; i < barCount; i++) {
+          const freqVal = dataArray[i * 2] / 255;
+          const barHeight = freqVal * 125 * (1 + bassSmooth * 0.45);
+          const xOffset = (i / barCount) * spread + baseR * 1.45;
+
+          [-1, 1].forEach(dir => {
+            const bx = cx + (xOffset * dir);
+            const by = cy;
+
+            const barGrad = ctx.createLinearGradient(bx, by - barHeight, bx, by + barHeight);
+            barGrad.addColorStop(0, '#ff7700');
+            barGrad.addColorStop(0.5, '#ff4500');
+            barGrad.addColorStop(1, 'rgba(255, 69, 0, 0)');
+
+            ctx.fillStyle = barGrad;
+            ctx.fillRect(bx - barWidth / 2, by - barHeight, barWidth, barHeight * 2);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#ff4500';
+            ctx.shadowBlur = 8;
+            ctx.fillRect(bx - barWidth / 2, by - barHeight - 2, barWidth, 3);
+          });
         }
+      }
 
-        function selectCourse(id) {
-            document.getElementById(`btn_${selectedCourse}`).classList.remove('selected');
-            selectedCourse = id;
-            document.getElementById(`btn_${selectedCourse}`).classList.add('selected');
-        }
+      // 5. 중앙 CORDELIA 프리미엄 타이포그래피 (고급스러운 볼드 스타일)
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
-        function selectLevel(id) {
-            document.getElementById(`btn_${selectedLevel}`).classList.remove('selected');
-            selectedLevel = id;
-            document.getElementById(`btn_${selectedLevel}`).classList.add('selected');
-            updateThemeColor(); 
-        }
+      // 텍스트 바운스 스케일 (음악 킥에 호응)
+      const textScale = 1 + (bassSmooth * 0.08);
 
-        function updateThemeColor() {
-            const levelData = data.levels.find(l => l.id === selectedLevel);
-            document.documentElement.style.setProperty('--dynamic-color', levelData.color);
-        }
+      // (1) 메인 헤드라인: CORDELIA
+      ctx.save();
+      ctx.translate(cx, cy - 28);
+      ctx.scale(textScale, textScale);
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.getElementById('btnKo').classList.toggle('active', lang === 'ko');
-            document.getElementById('btnEn').classList.toggle('active', lang === 'en');
-            updateUI();
-            renderGrids();
-        }
+      ctx.font = '900 52px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.letterSpacing = '12px';
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(255, 80, 0, 0.75)';
+      ctx.shadowBlur = 24 + bassSmooth * 20;
+      ctx.fillText('CORDELIA', 6, 0); // 레터스페이싱 중앙 보정
+      ctx.restore();
 
-        function updateUI() {
-            const texts = data.ui[currentLang];
-            document.getElementById('appTitle').innerText = texts.title;
-            document.getElementById('courseTitle').innerText = texts.courseTitle;
-            document.getElementById('levelTitle').innerText = texts.levelTitle;
-            document.getElementById('startBtn').innerText = texts.startBtn;
-            document.getElementById('countdownText').innerText = texts.waitText;
-            document.getElementById('countdownGo').innerText = texts.goText;
-        }
+      // (2) 서브 헤드라인: PREMIUM SOUND ZONE
+      ctx.save();
+      ctx.translate(cx, cy + 24);
+      ctx.scale(textScale, textScale);
 
-        function startRun() {
-            initAudio();
+      ctx.font = '800 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.letterSpacing = '7px';
+      ctx.fillStyle = '#ff6a33';
+      ctx.shadowColor = 'rgba(255, 106, 51, 0.6)';
+      ctx.shadowBlur = 16;
+      ctx.fillText('PREMIUM SOUND ZONE', 3.5, 0);
+      ctx.restore();
 
-            const overlay = document.getElementById('runOverlay');
-            const numberEl = document.getElementById('countdownNumber');
-            const textEl = document.getElementById('countdownText');
-            const goEl = document.getElementById('countdownGo');
-            
-            numberEl.style.display = 'block';
-            textEl.style.display = 'block';
-            goEl.style.display = 'none';
-            
-            let count = 7;
-            numberEl.innerText = count;
-            overlay.classList.add('active');
+      // (3) 하단 디테일 라벨: HIGH DEFINITION AUDIO
+      ctx.save();
+      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.letterSpacing = '5px';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 8;
+      ctx.fillText('HIGH DEFINITION ACOUSTICS', cx + 2.5, cy + 54);
+      ctx.restore();
 
-            playBeep(600, 'sine', 0.15);
+      ctx.restore();
 
-            const timer = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    numberEl.innerText = count;
-                    playBeep(600, 'sine', 0.15);
-                } else if (count === 0) {
-                    numberEl.style.display = 'none';
-                    textEl.style.display = 'none';
-                    goEl.style.display = 'block';
-                    playBeep(1000, 'sine', 0.6);
-                } else {
-                    clearInterval(timer);
-                    overlay.classList.remove('active');
-                    resetToDefault();
-                }
-            }, 1000);
-        }
+      // 6. 앰비언트 부유 파티클
+      ctx.save();
+      for (const p of particles) {
+        p.x += p.speedX * (1 + trebleSmooth * 2);
+        p.y += p.speedY * (1 + trebleSmooth * 2);
 
-        function resetToDefault() {
-            selectedCourse = 'c1'; 
-            selectedLevel = 'l2'; // 초기화 시 6:00/km 로 복구
-            setLanguage('ko');
-            updateThemeColor();     
-        }
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
 
-        window.onload = init;
-    </script>
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * (0.6 + trebleSmooth * 0.8)})`;
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    requestAnimationFrame(render);
+  </script>
 </body>
 </html>
