@@ -3,589 +3,191 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CORDELIA PREMIUM SOUND ZONE</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-    }
-    body, html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #06070a;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-
-    #canvas-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .controls {
-      position: absolute;
-      bottom: 26px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(14, 17, 24, 0.88);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      padding: 10px 20px;
-      border-radius: 40px;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      z-index: 100;
-    }
-
-    .controls.hidden {
-      opacity: 0;
-      transform: translateX(-50%) translateY(35px);
-      pointer-events: none;
-    }
-
-    .btn {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: rgba(255, 255, 255, 0.35);
-      transform: translateY(-1px);
-    }
-
-    .btn.primary {
-      background: #ff4500;
-      border-color: #ff6a33;
-      box-shadow: 0 0 18px rgba(255, 69, 0, 0.5);
-    }
-
-    .btn.primary:hover {
-      background: #e63e00;
-    }
-
-    .slider-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #ccc;
-      font-size: 12px;
-      padding: 0 6px;
-    }
-
-    input[type="range"] {
-      -webkit-appearance: none;
-      width: 80px;
-      height: 4px;
-      border-radius: 2px;
-      background: rgba(255, 255, 255, 0.25);
-      outline: none;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #ff4500;
-      cursor: pointer;
-    }
-
-    #status-toast {
-      position: absolute;
-      top: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(10, 12, 18, 0.85);
-      color: #eee;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 9px 22px;
-      border-radius: 22px;
-      font-size: 13px;
-      backdrop-filter: blur(10px);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 90;
-    }
-
-    #status-toast.show {
-      opacity: 1;
-    }
-  </style>
+  <title>주식회사 디앤테크 DN Tech | IoT 보안·관제 시스템</title>
+  <meta name="description" content="주식회사 디앤테크(DN Tech): 30년 이상의 보안 시스템 구축 경험을 토대로 IoT 기반 접근·제어 서비스를 제공합니다. ioKey, ioTram, iOrder.">
+  <link rel="canonical" href="https://iokey.kr/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="주식회사 디앤테크 DN Tech">
+  <meta property="og:title" content="주식회사 디앤테크 DN Tech">
+  <meta property="og:description" content="30년 이상의 보안 시스템 구축 경험을 토대로 한 IoT 접근·제어 솔루션: ioKey, ioTram, iOrder">
+  <meta property="og:url" content="https://iokey.kr/">
+  <meta property="og:image" content="https://iokey.kr/images/e4bdea_dffb2228aa7d4b6a898aa4168af5b58df000.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="images/e4bdea_f8dba87fc8674a8fbe17682c0fece3a1~mv2.png">
+  <meta name="theme-color" content="#0b1120">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip-link" href="#about">본문으로 건너뛰기</a>
 
-  <div id="canvas-container">
-    <canvas id="visualizer"></canvas>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">DN<span>·</span>Tech</a>
+    <nav class="nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="iotram.html">ioTram</a>
+      <a href="iokey.html">ioKey</a>
+      <a href="iorder.html">iOrder</a>
+    </nav>
   </div>
+</header>
 
-  <div id="status-toast"></div>
-
-  <div class="controls" id="controls">
-    <button class="btn primary" id="btn-system-audio" title="윈도우 노트북 소리 연동">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
-      시스템 오디오 연동
-    </button>
-    <button class="btn" id="btn-mic">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-      마이크 연동
-    </button>
-    <button class="btn" id="btn-demo">데모 비트</button>
-
-    <div class="slider-group">
-      <span>감도</span>
-      <input type="range" id="sensitivity" min="0.5" max="4.0" step="0.1" value="2.2">
+<!-- 히어로 -->
+<section class="hero" style="background-image:url('images/e4bdea_dffb2228aa7d4b6a898aa4168af5b58df000.jpg')">
+  <div class="container">
+    <span class="eyebrow">DN Tech · IoT Solutions</span>
+    <h1>WELCOME</h1>
+    <p class="lead">주식회사 디앤테크 홈페이지 방문을 환영합니다.<br>
+    현실의 공간을 IoT 기술로 접근하고 제어하는 서비스를 만듭니다.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="iokey.html">ioKey 바로가기</a>
+      <a class="btn btn-teal" href="iotram.html">ioTram 바로가기</a>
     </div>
-
-    <button class="btn" id="btn-fullscreen">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-      전체화면
-    </button>
   </div>
-
-  <script>
-    const canvas = document.getElementById('visualizer');
-    const ctx = canvas.getContext('2d');
-    const controls = document.getElementById('controls');
-    const toast = document.getElementById('status-toast');
-
-    let width, height;
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    function showToast(msg, duration = 3000) {
-      toast.innerText = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), duration);
-    }
-
-    let idleTimer = null;
-    function resetIdleTimer() {
-      controls.classList.remove('hidden');
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        controls.classList.add('hidden');
-      }, 3500);
-    }
-    window.addEventListener('mousemove', resetIdleTimer);
-    resetIdleTimer();
-
-    // ==========================================
-    // 오디오 처리 엔진
-    // ==========================================
-    let audioCtx = null;
-    let analyser = null;
-    let dataArray = null;
-    let sensitivity = 2.2;
-
-    document.getElementById('sensitivity').addEventListener('input', (e) => {
-      sensitivity = parseFloat(e.target.value);
-    });
-
-    function setupAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 1024;
-        analyser.smoothingTimeConstant = 0.78;
-        dataArray = new Uint8Array(analyser.frequencyBinCount);
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-    }
-
-    // 시스템 오디오 연동 (노트북 출력 소리 캡처)
-    document.getElementById('btn-system-audio').addEventListener('click', async () => {
-      try {
-        setupAudioContext();
-        showToast("공유 창에서 [전체 화면] 선택 후 좌측 하단 '시스템 오디오 공유'를 꼭 체크해주세요!");
-
-        const stream = await navigator.mediaDevices.getDisplayMedia({
-          video: true,
-          audio: {
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: false
-          }
-        });
-
-        const audioTracks = stream.getAudioTracks();
-        if (audioTracks.length === 0) {
-          showToast("⚠️ '오디오 공유'가 체크되지 않았습니다. 다시 시도해주세요.");
-          return;
-        }
-
-        const source = audioCtx.createMediaStreamSource(stream);
-        source.connect(analyser);
-        showToast("🎵 CORDELIA 오디오 비주얼라이저 연동 완료!");
-      } catch (err) {
-        console.error(err);
-        showToast("연동 취소됨 또는 권한 오류");
-      }
-    });
-
-    // 마이크 연동
-    document.getElementById('btn-mic').addEventListener('click', async () => {
-      try {
-        setupAudioContext();
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const source = audioCtx.createMediaStreamSource(stream);
-        source.connect(analyser);
-        showToast("🎤 마이크 오디오 연동 완료");
-      } catch (err) {
-        console.error(err);
-        showToast("마이크 권한을 허용해주세요.");
-      }
-    });
-
-    // 데모 비트
-    let demoPlaying = false;
-    document.getElementById('btn-demo').addEventListener('click', () => {
-      setupAudioContext();
-      if (demoPlaying) {
-        audioCtx.suspend();
-        demoPlaying = false;
-        showToast("데모 사운드 정지");
-        return;
-      }
-
-      demoPlaying = true;
-      showToast("🎶 묵직한 서브우퍼 킥 재생 중...");
-
-      function playKick() {
-        if (!demoPlaying) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(analyser);
-        gain.connect(audioCtx.destination);
-
-        const now = audioCtx.currentTime;
-        osc.frequency.setValueAtTime(150, now);
-        osc.frequency.exponentialRampToValueAtTime(28, now + 0.38);
-
-        gain.gain.setValueAtTime(0.9, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-
-        osc.start(now);
-        osc.stop(now + 0.42);
-
-        setTimeout(playKick, 580);
-      }
-      playKick();
-    });
-
-    // 전체화면 토글
-    document.getElementById('btn-fullscreen').addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => alert(err.message));
-      } else {
-        document.exitFullscreen();
-      }
-    });
-
-    // 파티클 & 충격파 데이터
-    const particles = [];
-    for (let i = 0; i < 90; i++) {
-      particles.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: Math.random() * 2.5 + 1,
-        speedX: (Math.random() - 0.5) * 0.7,
-        speedY: (Math.random() - 0.5) * 0.7,
-        alpha: Math.random() * 0.6 + 0.2
-      });
-    }
-
-    const shockwaves = [];
-    let prevBass = 0;
-    let bassSmooth = 0;
-    let midSmooth = 0;
-    let trebleSmooth = 0;
-
-    // ==========================================
-    // 메인 렌더링 루프 (강화된 스피커 펄스 + 타이포)
-    // ==========================================
-    function render(time) {
-      requestAnimationFrame(render);
-
-      let bass = 0, mid = 0, treble = 0;
-      if (analyser && dataArray) {
-        analyser.getByteFrequencyData(dataArray);
-
-        let bassSum = 0;
-        for (let i = 0; i < 8; i++) bassSum += dataArray[i];
-        bass = (bassSum / 8 / 255) * sensitivity;
-
-        let midSum = 0;
-        for (let i = 8; i < 60; i++) midSum += dataArray[i];
-        mid = (midSum / 52 / 255) * sensitivity;
-
-        let trebleSum = 0;
-        for (let i = 60; i < 180; i++) trebleSum += dataArray[i];
-        treble = (trebleSum / 120 / 255) * sensitivity;
-      }
-
-      bassSmooth += (bass - bassSmooth) * 0.25;
-      midSmooth += (mid - midSmooth) * 0.2;
-      trebleSmooth += (treble - trebleSmooth) * 0.16;
-
-      // 강력한 킥 감지 시 충격파 링 생성
-      if (bassSmooth > 0.42 && bassSmooth - prevBass > 0.14) {
-        shockwaves.push({ r: 90, opacity: 0.9, width: 4.5 });
-      }
-      prevBass = bassSmooth;
-
-      const cx = width / 2;
-      const cy = height / 2;
-
-      // 앰비언트 배경
-      const bgGrad = ctx.createRadialGradient(cx, cy, 60, cx, cy, Math.max(width, height) * 0.75);
-      bgGrad.addColorStop(0, '#151821');
-      bgGrad.addColorStop(0.5, '#0b0d13');
-      bgGrad.addColorStop(1, '#040507');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, width, height);
-
-      // 1. 네온 리본 웨이브 라인
-      const ribbonCount = 4;
-      const ribbonColors = [
-        'rgba(255, 75, 0, 0.45)',
-        'rgba(255, 0, 130, 0.35)',
-        'rgba(0, 220, 255, 0.35)',
-        'rgba(140, 0, 255, 0.3)'
-      ];
-
-      for (let r = 0; r < ribbonCount; r++) {
-        ctx.save();
-        ctx.beginPath();
-        const offsetPhase = (time * 0.0018) + (r * 0.9);
-        const amp = (65 + r * 22) * (1 + bassSmooth * 0.85);
-
-        ctx.moveTo(0, cy);
-        for (let x = 0; x <= width; x += 15) {
-          const normX = x / width;
-          const wave = Math.sin(normX * 6 + offsetPhase) * Math.cos(normX * 3 + offsetPhase * 0.5);
-          const y = cy + wave * amp + Math.sin(x * 0.01 + offsetPhase) * 22;
-          ctx.lineTo(x, y);
-        }
-
-        ctx.strokeStyle = ribbonColors[r];
-        ctx.lineWidth = 3 + bassSmooth * 2.5;
-        ctx.shadowColor = ribbonColors[r];
-        ctx.shadowBlur = 18;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // 2. 대형 서브우퍼 콘 바운스 (움직임 대폭 강화)
-      const baseR = Math.min(width, height) * 0.23;
-      const pulseMultiplier = 1 + (bassSmooth * 0.36); // 베이스 비트에 크게 팽창
-      const currentR = baseR * pulseMultiplier;
-
-      ctx.save();
-      // 외부 섀시 메탈 림
-      const rimGrad = ctx.createLinearGradient(cx - currentR, cy - currentR, cx + currentR, cy + currentR);
-      rimGrad.addColorStop(0, '#5a6170');
-      rimGrad.addColorStop(0.5, '#1e2129');
-      rimGrad.addColorStop(1, '#6b7382');
-
-      ctx.beginPath();
-      ctx.arc(cx, cy, currentR * 1.38, 0, Math.PI * 2);
-      ctx.fillStyle = rimGrad;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
-      ctx.shadowBlur = 40;
-      ctx.fill();
-
-      // 고무 서라운드 롤 엣지 (두께 팽창)
-      ctx.beginPath();
-      ctx.arc(cx, cy, currentR * 1.24, 0, Math.PI * 2);
-      ctx.fillStyle = '#0f1116';
-      ctx.lineWidth = 18 * pulseMultiplier;
-      ctx.strokeStyle = '#272b35';
-      ctx.stroke();
-      ctx.fill();
-
-      // 진동 콘 본체
-      const coneGrad = ctx.createRadialGradient(cx, cy, 25, cx, cy, currentR);
-      coneGrad.addColorStop(0, '#191d26');
-      coneGrad.addColorStop(0.7, '#212633');
-      coneGrad.addColorStop(1, '#0e1117');
-
-      ctx.beginPath();
-      ctx.arc(cx, cy, currentR, 0, Math.PI * 2);
-      ctx.fillStyle = coneGrad;
-      ctx.fill();
-
-      // 콘 내부 리브드 립 텍스처
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
-      ctx.lineWidth = 1.8;
-      for (let ring = 0.35; ring < 0.95; ring += 0.14) {
-        ctx.beginPath();
-        ctx.arc(cx, cy, currentR * ring, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-
-      // 우퍼 센터 돔 후광 앰비언트
-      const centerGlow = ctx.createRadialGradient(cx, cy, 10, cx, cy, currentR * 0.65);
-      centerGlow.addColorStop(0, `rgba(255, 75, 0, ${0.15 + bassSmooth * 0.25})`);
-      centerGlow.addColorStop(1, 'rgba(255, 75, 0, 0)');
-      ctx.fillStyle = centerGlow;
-      ctx.beginPath();
-      ctx.arc(cx, cy, currentR * 0.65, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      // 3. 충격파 링 (Shockwave)
-      for (let i = shockwaves.length - 1; i >= 0; i--) {
-        const sw = shockwaves[i];
-        sw.r += 7.5;
-        sw.opacity -= 0.016;
-
-        if (sw.opacity <= 0) {
-          shockwaves.splice(i, 1);
-          continue;
-        }
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(cx, cy, sw.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255, 75, 0, ${sw.opacity})`;
-        ctx.lineWidth = sw.width;
-        ctx.shadowColor = '#ff4500';
-        ctx.shadowBlur = 18;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // 4. 수직 이퀄라이저 주파수 바 (좌우 대칭)
-      if (dataArray) {
-        const barCount = 42;
-        const barWidth = 4.5;
-        const spread = width * 0.40;
-
-        for (let i = 0; i < barCount; i++) {
-          const freqVal = dataArray[i * 2] / 255;
-          const barHeight = freqVal * 125 * (1 + bassSmooth * 0.45);
-          const xOffset = (i / barCount) * spread + baseR * 1.45;
-
-          [-1, 1].forEach(dir => {
-            const bx = cx + (xOffset * dir);
-            const by = cy;
-
-            const barGrad = ctx.createLinearGradient(bx, by - barHeight, bx, by + barHeight);
-            barGrad.addColorStop(0, '#ff7700');
-            barGrad.addColorStop(0.5, '#ff4500');
-            barGrad.addColorStop(1, 'rgba(255, 69, 0, 0)');
-
-            ctx.fillStyle = barGrad;
-            ctx.fillRect(bx - barWidth / 2, by - barHeight, barWidth, barHeight * 2);
-
-            ctx.fillStyle = '#ffffff';
-            ctx.shadowColor = '#ff4500';
-            ctx.shadowBlur = 8;
-            ctx.fillRect(bx - barWidth / 2, by - barHeight - 2, barWidth, 3);
-          });
-        }
-      }
-
-      // 5. 중앙 CORDELIA 프리미엄 타이포그래피 (고급스러운 볼드 스타일)
-      ctx.save();
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-
-      // 텍스트 바운스 스케일 (음악 킥에 호응)
-      const textScale = 1 + (bassSmooth * 0.08);
-
-      // (1) 메인 헤드라인: CORDELIA
-      ctx.save();
-      ctx.translate(cx, cy - 28);
-      ctx.scale(textScale, textScale);
-
-      ctx.font = '900 52px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.letterSpacing = '12px';
-      ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = 'rgba(255, 80, 0, 0.75)';
-      ctx.shadowBlur = 24 + bassSmooth * 20;
-      ctx.fillText('CORDELIA', 6, 0); // 레터스페이싱 중앙 보정
-      ctx.restore();
-
-      // (2) 서브 헤드라인: PREMIUM SOUND ZONE
-      ctx.save();
-      ctx.translate(cx, cy + 24);
-      ctx.scale(textScale, textScale);
-
-      ctx.font = '800 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.letterSpacing = '7px';
-      ctx.fillStyle = '#ff6a33';
-      ctx.shadowColor = 'rgba(255, 106, 51, 0.6)';
-      ctx.shadowBlur = 16;
-      ctx.fillText('PREMIUM SOUND ZONE', 3.5, 0);
-      ctx.restore();
-
-      // (3) 하단 디테일 라벨: HIGH DEFINITION AUDIO
-      ctx.save();
-      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.letterSpacing = '5px';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-      ctx.shadowBlur = 8;
-      ctx.fillText('HIGH DEFINITION ACOUSTICS', cx + 2.5, cy + 54);
-      ctx.restore();
-
-      ctx.restore();
-
-      // 6. 앰비언트 부유 파티클
-      ctx.save();
-      for (const p of particles) {
-        p.x += p.speedX * (1 + trebleSmooth * 2);
-        p.y += p.speedY * (1 + trebleSmooth * 2);
-
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * (0.6 + trebleSmooth * 0.8)})`;
-        ctx.fill();
-      }
-      ctx.restore();
-    }
-
-    requestAnimationFrame(render);
-  </script>
+</section>
+
+<!-- About Us -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-head center">
+      <h2>보안시스템의 기반 위에 세운 IoT 기술</h2>
+      <p>(주)DN Tech는 30년 이상의 최고 보안 시스템 구축 경험을 토대로, 전 세계 어디서나 누구든
+      IoT 기술 기반의 디바이스로 손쉽게 현실의 공간에 접근하고 제어하는 서비스를 구현해 나가고 있습니다.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card">
+        <div class="thumb"><img width="1600" height="1067" src="images/11062b_cc8f35a1926d48999897170a27e52173~mv2.jpg" alt="전자 회로" loading="lazy"></div>
+        <div class="body">
+          <h3>보안시스템의 기반</h3>
+          <p>30년 이상의 보안 시스템 구축 경험. Magnetic 카드, SMART 카드, RFID, QR, 바코드 등
+          자동인식 핵심 기술을 모두 보유하고 있습니다.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="625" src="images/11062b_11394e6c93f64cb0b0e4229cf4364955~mv2.jpg" alt="IO Tram 모노레일·트램 관제" loading="lazy"></div>
+        <div class="body">
+          <h3>IO Tram</h3>
+          <p>모노레일·트램에 적용. 기존 GPS 방식 위치 관제의 한계를 극복.
+          RFID 기반 기술로 1cm의 오차도 없이 정확한 위치에서 다수의 차량을 실시간 제어·관제합니다.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="1068" src="images/a3ac449c86364dd8999922949876d09e.jpg" alt="IO Key 비대면 체크인" loading="lazy"></div>
+        <div class="body">
+          <h3>IO Key</h3>
+          <p>숙박업체에 필요한 비대면 체크인과 객실 내 확장 서비스.
+          실시간 호텔 컨디션·이슈 공유와 직원 간 업무 커뮤니케이션으로 인건비 절감과 서비스 향상을 실현합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 납품 실적 -->
+<section class="section alt" id="clients">
+  <div class="container">
+    <div class="section-head">
+      <h2>납품 실적</h2>
+      <p>국내 최초 사례를 포함해 관제·인증·결제 분야에서 축적된 구축 실적입니다.</p>
+    </div>
+    <div class="grid cols-3">
+      <a class="card" href="https://youtu.be/LNgho-tpgcc" target="_blank" rel="noopener">
+        <div class="thumb"><img width="1600" height="818" src="images/e4bdea_fd307426fd7145e3abf6eb6214dcc6d5~mv2.jpg" alt="모노레일 관제" loading="lazy"></div>
+        <div class="body"><span class="tag">관제</span><h3>모노레일 관제</h3><p>용평 에니포레 모노레일 관제시스템 구축</p></div>
+      </a>
+      <a class="card" href="https://youtu.be/Ry2UmjiQfAg" target="_blank" rel="noopener">
+        <div class="thumb"><img width="1600" height="806" src="images/e4bdea_fec0961fbeac48dfa5a83ddf534e0f40~mv2.jpg" alt="강촌레일바이크 VR" loading="lazy"></div>
+        <div class="body"><span class="tag">VR</span><h3>강촌레일바이크 VR</h3><p>강촌레일바이크 내 가상현실 체험시스템</p></div>
+      </a>
+      <a class="card" href="https://youtu.be/Rx-oS3TILT8" target="_blank" rel="noopener">
+        <div class="thumb"><img width="1600" height="886" src="images/e4bdea_28402bacd69e42de9541486748b2dc2e~mv2.jpg" alt="대구교육박물관 VR" loading="lazy"></div>
+        <div class="body"><span class="tag">VR</span><h3>대구교육박물관 VR</h3><p>대구교육박물관 내 가상현실 교육 콘텐츠 구축</p></div>
+      </a>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="1000" src="images/e4bdea_ec5a9f6644f0412b8e9385c3deac01be~mv2.jpg" alt="공공자전거시스템" loading="lazy"></div>
+        <div class="body"><span class="tag">시스템</span><h3>공공자전거시스템</h3><p>국내 최초 공공자전거 시스템 구축 [창원시]</p></div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="1000" src="images/e4bdea_ec695f0ae10c43138f24724a3ab9d6de~mv2.jpg" alt="금강산관광지역 자체결제시스템" loading="lazy"></div>
+        <div class="body"><span class="tag">결제</span><h3>금강산관광지역 자체결제시스템</h3><p>금강산관광지역 자체 결제 시스템 구축</p></div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="1000" src="images/e4bdea_09f15ddda70e40128ab8412f03598107~mv2.jpg" alt="부산국제영화제 아이디카드 발급시스템" loading="lazy"></div>
+        <div class="body"><span class="tag">발급·검표</span><h3>부산국제영화제 ID카드 발급시스템</h3><p>아이디카드 발급시스템 · 검표 시스템 · 인력 파견</p></div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="973" src="images/e4bdea_4a860ec95f08418bbbdba12be90be231~mv2.jpg" alt="학내관리시스템 1" loading="lazy"></div>
+        <div class="body"><span class="tag">학내</span><h3>학내관리시스템 1</h3><p>전자학생증과 학생증 기반의 시스템 구축</p></div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="971" src="images/e4bdea_53ab6aeca1b343a3be9d5252c471af77~mv2.jpg" alt="학내관리시스템 2" loading="lazy"></div>
+        <div class="body"><span class="tag">학내</span><h3>학내관리시스템 2</h3><p>전자학생증 기반의 시스템 구축</p></div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="926" src="images/e4bdea_8e22bf32ffd84c3bb5f77fa77116a487~mv2.jpg" alt="영화제 행사" loading="lazy"></div>
+        <div class="body"><span class="tag">행사</span><h3>영화제 행사</h3><p>ID카드 현장 발급 시스템과 기반 운영시스템</p></div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="934" src="images/e4bdea_81af0d8588464b23b29db02668c3d258~mv2.jpg" alt="RFID 기반 시스템 1" loading="lazy"></div>
+        <div class="body"><span class="tag">RFID</span><h3>RFID 기반 시스템 1</h3><p>RFID 자동인식 기반 시스템 구축</p></div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="1055" src="images/e4bdea_64c3dfd145a748bdb4e09367aefe75d0~mv2.jpg" alt="RFID 기반 시스템 2" loading="lazy"></div>
+        <div class="body"><span class="tag">RFID</span><h3>RFID 기반 시스템 2</h3><p>RFID 자동인식 기반 시스템 구축</p></div>
+      </div>
+      <div class="card">
+        <div class="thumb"><img width="1600" height="931" src="images/e4bdea_4b66d4661a2445ba88585d70a7612730~mv2.jpg" alt="RFID 기반 시스템 3" loading="lazy"></div>
+        <div class="body"><span class="tag">RFID</span><h3>RFID 기반 시스템 3</h3><p>RFID 자동인식 기반 시스템 구축</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DN Tech? -->
+<section class="section dark" id="dntech">
+  <div class="container">
+    <div class="split">
+      <div>
+        <div class="section-head" style="margin-bottom:0">
+          <h2>Get to Know Us</h2>
+          <p style="color:#cbd5e1">주식회사 디앤테크는 자동인식 분야에서 출발해 Magnetic 카드, SMART 카드, RFID, QR, 바코드 등
+          각종 자동인식에 대한 모든 핵심 기술을 보유하고 있으며, 빠르게 발전해 변해가는 시장에서 독자적인 영역을 구축하고 있습니다.</p>
+        </div>
+      </div>
+      <div>
+        <ul class="feature-list">
+          <li>보안 출입 시스템 및 학내관리시스템 (Software &amp; Hardware)</li>
+          <li>스키장 검표 시스템, 국내 최초 무인 자전거 대여 시스템</li>
+          <li>시스템 구축 사업 및 시스템 간 통합</li>
+          <li>국내 최고의 경험과 기술력으로 고객의 요구에 만족을 드리겠습니다</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 문의 -->
+<section class="contact-band" id="contact">
+  <div class="container inner">
+    <h2>문의하기</h2>
+    <p>제품·구축 문의를 남겨 주시면 자료를 보내 드립니다.</p>
+    <div class="contacts">
+      <a href="mailto:jcardsys@naver.com">jcardsys@naver.com</a>
+      <span>070-8065-7517</span>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div><span class="brand">DN·Tech</span> 주식회사 디앤테크</div>
+    <div>jcardsys@naver.com · 070-8065-7517</div>
+  </div>
+</footer>
+
+<script src="reveal.js"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"bcdcabe59135448c8dc501fc3b03a7e8","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
